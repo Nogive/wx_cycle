@@ -1,0 +1,40 @@
+<!--pages/search/search.wxml-->
+<view class="container">
+  <!-- 搜索 -->
+  <view class='search-wrapper'>
+    <view class='search-box'>
+      <text class="iconfont icon-sousuo"></text>
+      <input placeholder="搜索垃圾查看对应分类" placeholder-style="color:#999;font-size:28rpx;" confirm-type='搜索' bindinput="handleSearch" value="{{searchKey}}" />
+      <text class='iconfont icon-guanbi- clear' wx:if="{{searchKey!=''}}" catchtap='handleClear'></text>
+    </view>
+  </view>
+  
+  <view class='list-wrapper'>
+    <view class='one-list' wx:for="{{goodsOption}}" wx:for-item="goods" wx:key="{{index}}" data-name="{{goods.name}}" data-key="{{goods.key}}" catchtap='handleViewGood'>{{goods.name}}</view>
+  </view>
+  <view class='no-list' wx:if="{{goodsOption.length == 0 && showNoData}}">
+    <text class='iconfont icon-icon'></text>
+    <text>没有找到您搜索的结果哦~</text>
+  </view>
+
+  <!-- btns -->
+  <view class='btn-wrapper'>
+    <button class='btn btn-share' open-type='share'>
+      <text class="iconfont icon-feiji-copy"></text>分享
+    </button>
+    <button class='btn btn-message' open-type="contact" bindcontact="handleContact">
+      <text class="iconfont icon-liuyan"></text>留言
+    </button>
+  </view>
+
+  <!-- modal -->
+  <view class='modal-wrapper goods-modal' wx:if="{{showModal}}" catchtap='handleToggle'>
+    <view class='modal-content {{currentGoods.value}}-content'>
+      <view class='title'>{{currentGoods.goodName}}</view>
+      <view class='alia'>属于</view>
+      <text class='iconfont {{currentGoods.icon}}'></text>
+      <view class='name'>{{currentGoods.name}}</view>
+      <view class='eng'>{{currentGoods.english}}</view>
+    </view>
+  </view>
+</view>

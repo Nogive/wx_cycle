@@ -1,0 +1,84 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="box" wx:if="{{false}}">
+    <view class='arrow'></view>
+    <view class='body'>
+      <view class="text">点击
+        <text class="iconfont icon-xiaochengxu"></text> 添加到我的小程序</view>
+    </view>
+  </view>
+  <!-- 搜索 -->
+  <view class='search-wrapper'>
+    <view class='search-box'>
+      <text class="iconfont icon-sousuo"></text>
+      <input placeholder="搜索垃圾查看对应分类" placeholder-style="color:#999;font-size:28rpx;" confirm-type='搜索' catch:tap="handleSearch" />
+    </view>
+  </view>
+  <!-- tab -->
+  <view class='tab-wrapper'>
+    <view class='tab tab-{{key}} {{key == currentTab ? "current" : ""}}' wx:for="{{tabOptions}}" wx:for-index="key" wx:for-item="item" wx:key="{{index}}" id="{{key}}" bindtap='handleTapTab'>
+      <text class="iconfont {{item.icon}}"></text>
+      <text class='title'>{{item.name}}</text>
+    </view>
+  </view>
+  <!-- content -->
+  <scroll-view
+    scroll-y = "true" 
+    scroll-with-animation = "true" 
+    scroll-into-view="{{currentView}}"
+    class = "heightHandred"
+    bindscroll="onScroll"
+  >
+    <view class='content-wrapper' wx:for="{{textOptions}}" wx:key="{{index}}" id="{{item.key}}">
+      <view class='short-intro'>
+        <view class='title-block'></view>
+        <view class='img-block'>
+          <image class='img' src="../../images/{{item.key}}.png" mode="widthFix"></image>
+        </view>
+        <view class='intro-text'>
+          <text class='title'>{{item.title}}</text>
+          {{item.shortIntro}}
+        </view>
+        <view class='re-title'>投放要求：</view>
+        <view class='list-text'>
+          <view class='dot-text' wx:for="{{item.requireList}}" wx:for-item="notice" wx:key="{{index}}">{{notice}}</view>
+        </view>
+      </view>
+      <view class='list-wrapper'>
+        <view class='one-list' wx:for="{{item.goods}}" wx:for-item="goods" wx:key="{{index}}" data-name="{{goods}}" data-key="{{item.key}}" catchtap='handleViewGood'>{{goods}}</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- btns -->
+  <view class='btn-wrapper'>
+    <button class='btn btn-share' open-type='share'>
+      <text class="iconfont icon-feiji-copy"></text>分享
+    </button>
+    <button class='btn btn-message' open-type="contact" bindcontact="handleContact">
+      <text class="iconfont icon-liuyan"></text>留言
+    </button>
+    <button class='btn' catchtap='handleViewQrCode'>
+      <text class="iconfont icon-ico"></text>二维码
+    </button>
+  </view>
+
+  <!-- modal -->
+  <view class='modal-wrapper goods-modal' wx:if="{{showModal}}" catchtap='handleToggle'>
+    <view class='modal-content {{currentGoods.value}}-content'>
+      <view class='title'>{{currentGoods.goodName}}</view>
+      <view class='alia'>属于</view>
+      <text class='iconfont {{currentGoods.icon}}'></text>
+      <view class='name'>{{currentGoods.name}}</view>
+      <view class='eng'>{{currentGoods.english}}</view>
+    </view>
+  </view>
+
+  <view class='modal-wrapper qr-modal-wrqpper' wx:if="{{showQr}}">
+    <view class='modal-content qr-modal'>
+      <text class='modal-icon iconfont icon-guanbi' catchtap='handleCloseModal'></text>
+      <image class='img' src="{{qrCodePath}}" mode="widthFix"></image>
+      <button class='modal-btn' data-qr="{{qrCodePath}}" catchtap='handleSaveQrCode'>允许保存二维码到相册</button>
+    </view>
+  </view>
+</view>
